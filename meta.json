@@ -2,7 +2,7 @@
   "$schema": "https://dl.viam.dev/module.schema.json",
   "module_id": "brad-grigsby:maintenance",
   "visibility": "public",
-  "url": "https://github.com/bgrigsby8/maintenances",
+  "url": "https://github.com/bgrigsby8/maintenance",
   "description": "Modular sensor component: time-allowed",
   "applications": null,
   "markdown_link": "README.md",
