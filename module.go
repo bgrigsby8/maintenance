@@ -27,6 +27,7 @@ func init() {
 type Config struct {
 	StartTime string `json:"start_time"`
 	EndTime   string `json:"end_time"`
+	Timezone  string `json:"timezone"`
 }
 
 // Validate ensures all parts of the config are valid and important fields exist.
@@ -52,6 +53,11 @@ func (cfg *Config) Validate(path string) ([]string, []string, error) {
 	}
 	if _, err := time.Parse("15:04", cfg.EndTime); err != nil {
 		return nil, nil, fmt.Errorf("%s.end_time: must be in HH:MM (24-hour) format", path)
+	}
+	if cfg.Timezone != "" {
+		if _, err := time.LoadLocation(cfg.Timezone); err != nil {
+			return nil, nil, fmt.Errorf("%s.timezone: invalid timezone %q", path, cfg.Timezone)
+		}
 	}
 
 	return nil, nil, nil
@@ -110,6 +116,12 @@ func (s *maintenanceTimeAllowed) Readings(ctx context.Context, extra map[string]
 	}
 
 	loc := now.Location()
+	if s.cfg.Timezone != "" {
+		if tz, err := time.LoadLocation(s.cfg.Timezone); err == nil {
+			loc = tz
+			now = now.In(tz)
+		}
+	}
 	y, m, d := now.Date()
 	startToday := time.Date(y, m, d, start.Hour(), start.Minute(), 0, 0, loc)
 	endToday := time.Date(y, m, d, end.Hour(), end.Minute(), 0, 0, loc)
@@ -122,6 +134,8 @@ func (s *maintenanceTimeAllowed) Readings(ctx context.Context, extra map[string]
 		// Overnight range e.g. 22:00–06:00
 		allowed = !now.Before(startToday) || now.Before(endToday)
 	}
+
+	s.logger.Debugf("now=%s start=%s end=%s allowed=%v", now.Format("15:04:05 MST"), startToday.Format("15:04:05 MST"), endToday.Format("15:04:05 MST"), allowed)
 
 	return map[string]any{"is_allowed": allowed}, nil
 }
