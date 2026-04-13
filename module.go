@@ -97,7 +97,7 @@ func (s *maintenanceTimeAllowed) Name() resource.Name {
 	return s.name
 }
 
-func (s *maintenanceTimeAllowed) Readings(ctx context.Context, extra map[string]interface{}) (map[string]interface{}, error) {
+func (s *maintenanceTimeAllowed) Readings(ctx context.Context, extra map[string]any) (map[string]any, error) {
 	now := time.Now()
 
 	start, err := time.Parse("15:04", s.cfg.StartTime)
@@ -123,14 +123,14 @@ func (s *maintenanceTimeAllowed) Readings(ctx context.Context, extra map[string]
 		allowed = !now.Before(startToday) || now.Before(endToday)
 	}
 
-	return map[string]interface{}{"is_allowed": allowed}, nil
+	return map[string]any{"is_allowed": allowed}, nil
 }
 
-func (s *maintenanceTimeAllowed) DoCommand(ctx context.Context, cmd map[string]interface{}) (map[string]interface{}, error) {
+func (s *maintenanceTimeAllowed) DoCommand(ctx context.Context, cmd map[string]any) (map[string]any, error) {
 	return nil, fmt.Errorf("not implemented")
 }
 
-func (s *maintenanceTimeAllowed) Status(ctx context.Context) (map[string]interface{}, error) {
+func (s *maintenanceTimeAllowed) Status(ctx context.Context) (map[string]any, error) {
 	return nil, fmt.Errorf("not implemented")
 }
 
