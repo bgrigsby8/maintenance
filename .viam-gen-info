@@ -1,0 +1,13 @@
+{
+  "module_name": "maintenance",
+  "visibility": "public",
+  "namespace": "brad-grigsby",
+  "language": "go",
+  "resource_type": "component",
+  "resource_subtype": "sensor",
+  "model_name": "time-allowed",
+  "initialize_git": false,
+  "generator_version": "0.1.0",
+  "generated_on": "2026-04-13T15:12:35.195873Z",
+  "module_readme_link": "README.md"
+}
