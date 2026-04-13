@@ -1,47 +1,40 @@
 # Model brad-grigsby:maintenance:time-allowed
 
-Provide a description of the model and any relevant information.
+A [sensor](https://docs.viam.com/components/sensor/) component that reports whether the current local time falls within a configured maintenance window. Call `Readings` to get a single boolean value — `true` when the machine is inside the allowed window, `false` otherwise.
+
+Overnight windows (e.g. `22:00`–`06:00`) are supported automatically.
 
 ## Configuration
-The following attribute template can be used to configure this model:
-
-```json
-{
-"attribute_1": <float>,
-"attribute_2": <string>
-}
-```
 
 ### Attributes
 
-The following attributes are available for this model:
-
-| Name          | Type   | Inclusion | Description                |
-|---------------|--------|-----------|----------------------------|
-| `attribute_1` | float  | Required  | Description of attribute 1 |
-| `attribute_2` | string | Optional  | Description of attribute 2 |
+| Name         | Type   | Inclusion | Description                                              |
+|--------------|--------|-----------|----------------------------------------------------------|
+| `start_time` | string | Required  | Start of the allowed window in `HH:MM` (24-hour) format |
+| `end_time`   | string | Required  | End of the allowed window in `HH:MM` (24-hour) format   |
 
 ### Example Configuration
 
 ```json
 {
-  "attribute_1": 1.0,
-  "attribute_2": "foo"
+  "start_time": "08:00",
+  "end_time": "17:00"
 }
 ```
 
-## DoCommand
+## Readings
 
-If your model implements DoCommand, provide an example payload of each command that is supported and the arguments that can be used. If your model does not implement DoCommand, remove this section.
+Returns a single key indicating whether the current time is within the configured window.
 
-### Example DoCommand
+| Key          | Type | Description                                            |
+|--------------|------|--------------------------------------------------------|
+| `is_allowed` | bool | `true` if current time is within the maintenance window |
+
+### Example Response
 
 ```json
 {
-  "command_name": {
-    "arg1": "foo",
-    "arg2": 1
-  }
+  "is_allowed": true
 }
 ```
 
